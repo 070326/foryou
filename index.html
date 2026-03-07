@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>Небольшое признание</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Шрифты -->
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-main: #050509;
+      --accent: #DABB8F;
+      --accent-strong: #F4E0B8;
+      --accent-soft: rgba(218, 187, 143, 0.55);
+      --glass-bg: rgba(13, 13, 18, 0.88);
+      --glass-bg-soft: rgba(14, 14, 20, 0.94);
+      --text-main: #F6F1E7;
+      --text-muted: #B9B0A3;
+      --border-light: rgba(255, 255, 255, 0.16);
+      --shadow-soft: 0 28px 70px rgba(0, 0, 0, 0.9);
+      --radius-asym: 38px 20px 38px 20px;
+      --transition: 0.35s ease;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
+    }
+
+    body {
+      font-family: "Manrope", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at top left, #26252B 0, #121019 36%, #050509 70%, #000000 100%),
+        radial-gradient(circle at bottom right, rgba(218, 187, 143, 0.16) 0, transparent 55%),
+        radial-gradient(circle at center, #111016 0, #050509 70%);
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 18px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page-wrapper {
+      width: 100%;
+      max-width: 1120px;
+    }
+
+    .glow-bg {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .glow-orb {
+      position: absolute;
+      border-radius: 999px;
+      filter: blur(60px);
+      opacity: 0.35;
+      mix-blend-mode: screen;
+    }
+
+    .glow-orb--top {
+      width: 420px;
+      height: 420px;
+      top: -120px;
+      left: -120px;
+      background: radial-gradient(circle, rgba(218, 187, 143, 0.2), transparent 70%);
+    }
+
+    .glow-orb--side {
+      width: 360px;
+      height: 360px;
+      bottom: -120px;
+      right: -60px;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.08), transparent 70%);
+    }
+
+    .glass-shell {
+      background: linear-gradient(135deg, rgba(18, 18, 26, 0.98), rgba(6, 6, 10, 0.98));
+      border-radius: var(--radius-asym);
+      padding: 1.2px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      box-shadow: var(--shadow-soft);
+      position: relative;
+      overflow: hidden;
+      transform-origin: center;
+      animation: shell-in 0.9s ease-out forwards;
+    }
+
+    .glass-shell::before {
+      content: "";
+      position: absolute;
+      inset: -1px;
+      border-radius: inherit;
+      background: linear-gradient(135deg, rgba(218, 187, 143, 0.2), transparent 40%, rgba(255, 255, 255, 0.06) 70%, transparent 100%);
+      opacity: 0.35;
+      pointer-events: none;
+      mix-blend-mode: soft-light;
+    }
+
+    .glass-inner {
+      background:
+        radial-gradient(circle at top left, rgba(255, 255, 255, 0.05), transparent 60%),
+        radial-gradient(circle at bottom right, rgba(0, 0, 0, 0.75), #050508);
+      border-radius: var(--radius-asym);
+      padding: 32px 30px 28px;
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(26px);
+      -webkit-backdrop-filter: blur(26px);
+    }
+
+    .glass-inner::before {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      background:
+        radial-gradient(circle at 10% 0%, rgba(218, 187, 143, 0.12) 0, transparent 55%),
+        radial-gradient(circle at 100% 20%, rgba(255, 255, 255, 0.06) 0, transparent 60%);
+      opacity: 0.9;
+      pointer-events: none;
+      mix-blend-mode: screen;
+    }
+
+    .content {
+      position: relative;
+      z-index: 1;
+      animation: content-in 0.8s ease-out 0.15s both;
+    }
+
+    /* Анимации */
+    @keyframes shell-in {
+      from {
+        transform: translateY(12px) scale(0.98);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+      }
+    }
+
+    @keyframes content-in {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Заголовок */
+    .intro-heading {
+      border-left: 2px solid var(--accent-soft);
+      padding-left: 20px;
+      margin-bottom: 26px;
+    }
+
+    .section-badge {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.22em;
+      color: rgba(185, 176, 163, 0.75);
+      margin-bottom: 6px;
+    }
+
+    .intro-heading-text {
+      font-family: "Cormorant Garamond", "Times New Roman", serif;
+      font-style: italic;
+      font-weight: 400;
+      font-size: clamp(1.4rem, 1.7rem + 0.4vw, 1.9rem);
+      letter-spacing: 0.045em;
+      color: var(--text-main);
+    }
+
+    .intro-subtle {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--text-muted);
+      margin-top: 8px;
+    }
+
+    /* Основное сообщение */
+    .main-message {
+      margin-top: 20px;
+      margin-bottom: 30px;
+      background: var(--glass-bg);
+      border-radius: var(--radius-asym);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 24px 24px 22px;
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
+      box-shadow: 0 22px 50px rgba(0, 0, 0, 0.8);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .main-message::before {
+      content: "—";
+      position: absolute;
+      top: 18px;
+      right: 22px;
+      font-family: "Cormorant Garamond", "Times New Roman", serif;
+      font-size: 2.2rem;
+      color: rgba(244, 224, 184, 0.16);
+    }
+
+    .main-message::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(135deg, rgba(218, 187, 143, 0.12), transparent 55%),
+        linear-gradient(315deg, rgba(255, 255, 255, 0.04), transparent 60%);
+      opacity: 0.75;
+      mix-blend-mode: soft-light;
+      pointer-events: none;
+    }
+
+    .main-message-text {
+      position: relative;
+      font-size: 1.02rem;
+      line-height: 1.8;
+      color: var(--text-main);
+    }
+
+    .main-message-em {
+      color: var(--accent-strong);
+      text-shadow: 0 0 10px rgba(244, 224, 184, 0.3);
+    }
+
+    /* Разделитель */
+    .divider {
+      margin: 28px 0 22px;
+      height: 1px;
+      background:
+        linear-gradient(
+          90deg,
+          transparent 0,
+          rgba(218, 187, 143, 0.2) 15%,
+          rgba(218, 187, 143, 0.75) 50%,
+          rgba(218, 187, 143, 0.2) 85%,
+          transparent 100%
+        );
+      opacity: 0.95;
+      position: relative;
+      overflow: visible;
+    }
+
+    .divider::before {
+      content: "";
+      position: absolute;
+      top: -2px;
+      left: 50%;
+      width: 26px;
+      height: 5px;
+      transform: translateX(-50%);
+      border-radius: 999px;
+      background: radial-gradient(circle, rgba(244, 224, 184, 0.9), rgba(218, 187, 143, 0.2));
+      box-shadow: 0 0 16px rgba(244, 224, 184, 0.8);
+    }
+
+    .section-heading {
+      font-family: "Cormorant Garamond", "Times New Roman", serif;
+      font-weight: 500;
+      font-size: 1.08rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 18px;
+    }
+
+    /* Стихи */
+    .poems-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 18px;
+    }
+
+    .poem-card {
+      background: var(--glass-bg-soft);
+      border-radius: 26px 16px 26px 16px;
+      border: 1px solid var(--border-light);
+      padding: 20px 18px 18px;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.75);
+      position: relative;
+      overflow: hidden;
+      transition:
+        transform var(--transition),
+        border-color var(--transition),
+        box-shadow var(--transition),
+        background var(--transition),
+        filter var(--transition);
+      transform-origin: center;
+    }
+
+    .poem-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top left, rgba(218, 187, 143, 0.16), transparent 60%);
+      opacity: 0;
+      transition: opacity var(--transition);
+      pointer-events: none;
+      mix-blend-mode: screen;
+    }
+
+    .poem-card:hover {
+      transform: translateY(-4px) scale(1.01);
+      border-color: rgba(218, 187, 143, 0.85);
+      box-shadow: 0 20px 44px rgba(0, 0, 0, 0.9);
+      background: radial-gradient(circle at top left, rgba(18, 18, 26, 0.98), rgba(6, 6, 10, 0.98));
+      filter: saturate(1.08);
+    }
+
+    .poem-card:hover::before {
+      opacity: 1;
+    }
+
+    .poem-author {
+      font-family: "Cormorant Garamond", "Times New Roman", serif;
+      font-size: 1.1rem;
+      color: var(--accent-strong);
+      margin-bottom: 4px;
+      letter-spacing: 0.04em;
+    }
+
+    .poem-title {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+
+    .poem-text {
+      font-family: "Cormorant Garamond", "Times New Roman", serif;
+      font-size: 1rem;
+      line-height: 1.8;
+      color: var(--text-main);
+      opacity: 0.94;
+    }
+
+    .poem-placeholder {
+      font-size: 0.86rem;
+      color: var(--text-muted);
+      margin-top: 10px;
+    }
+
+    /* Комплименты */
+    .compliments {
+      margin-top: 8px;
+    }
+
+    .compliments-intro {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+
+    .compliments ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .compliments li {
+      position: relative;
+      padding-left: 22px;
+      margin-bottom: 10px;
+      font-size: 0.98rem;
+      color: var(--text-main);
+      line-height: 1.7;
+    }
+
+    .compliments li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.9em;
+      width: 11px;
+      height: 1.1px;
+      background: linear-gradient(90deg, rgba(218, 187, 143, 0.0), rgba(244, 224, 184, 0.95));
+      box-shadow: 0 0 6px rgba(244, 224, 184, 0.7);
+    }
+
+    /* Таймер */
+    .timer-section {
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 1px dashed rgba(218, 187, 143, 0.3);
+    }
+
+    .timer-text {
+      font-size: 0.93rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+      margin-bottom: 14px;
+    }
+
+    .timer-wrapper {
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .timer-ring {
+      position: relative;
+      width: 82px;
+      height: 82px;
+      border-radius: 999px;
+      background:
+        radial-gradient(circle, rgba(0, 0, 0, 0.8) 55%, transparent 60%),
+        conic-gradient(from 270deg, rgba(244, 224, 184, 0.9) 0turn, rgba(244, 224, 184, 0.0) 0turn);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.9);
+      padding: 1px;
+    }
+
+    .timer-ring-inner {
+      width: 66px;
+      height: 66px;
+      border-radius: 999px;
+      background: rgba(7, 7, 10, 0.95);
+      border: 1px solid rgba(244, 224, 184, 0.55);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+
+    .timer-box {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 10px 18px;
+      border-radius: 18px;
+      background: rgba(10, 10, 14, 0.9);
+      border: 1px solid rgba(218, 187, 143, 0.5);
+      box-shadow: 0 10px 26px rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      min-width: 150px;
+    }
+
+    .timer-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    .timer-value {
+      font-family: "Cormorant Garamond", "Times New Roman", serif;
+      font-size: 1.45rem;
+      letter-spacing: 0.16em;
+      color: var(--accent-strong);
+      min-width: 80px;
+      text-align: left;
+      text-shadow: 0 0 10px rgba(244, 224, 184, 0.5);
+    }
+
+    .timer-subtext {
+      font-size: 0.78rem;
+      color: rgba(185, 176, 163, 0.9);
+      margin-top: 4px;
+    }
+
+    .after-timer {
+      display: none;
+      background: rgba(15, 15, 20, 0.95);
+      border-radius: 24px 16px 24px 16px;
+      border: 1px solid rgba(218, 187, 143, 0.8);
+      padding: 18px 18px 16px;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      box-shadow: 0 18px 42px rgba(0, 0, 0, 0.9);
+      animation: content-in 0.6s ease-out;
+    }
+
+    .after-timer-text {
+      font-size: 0.98rem;
+      color: var(--text-main);
+      line-height: 1.8;
+      margin-bottom: 12px;
+    }
+
+    a.link-soft {
+      color: var(--accent-strong);
+      text-decoration: none;
+      border-bottom: 1px dotted rgba(244, 224, 184, 0.8);
+      padding-bottom: 1px;
+      transition: color var(--transition), border-color var(--transition), text-shadow var(--transition);
+    }
+
+    a.link-soft:hover {
+      color: #fff7e8;
+      border-color: rgba(255, 247, 232, 0.95);
+      text-shadow: 0 0 10px rgba(255, 247, 232, 0.95);
+    }
+
+    .tg-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 9px 20px;
+      margin-top: 6px;
+      border-radius: 999px;
+      border: 1px solid rgba(218, 187, 143, 0.85);
+      color: var(--accent-strong);
+      font-size: 0.9rem;
+      text-decoration: none;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      background: radial-gradient(circle at top left, rgba(218, 187, 143, 0.17), rgba(8, 8, 12, 0.97));
+      transition:
+        background var(--transition),
+        border-color var(--transition),
+        transform var(--transition),
+        box-shadow var(--transition),
+        color var(--transition),
+        filter var(--transition);
+    }
+
+    .tg-button:hover {
+      background: radial-gradient(circle at top left, rgba(244, 224, 184, 0.26), rgba(5, 5, 9, 0.99));
+      border-color: rgba(244, 224, 184, 0.98);
+      color: #fff7eb;
+      transform: translateY(-1px) scale(1.01);
+      box-shadow: 0 16px 38px rgba(0, 0, 0, 0.95);
+      filter: saturate(1.08);
+    }
+
+    /* Подпись */
+    .footer-note {
+      margin-top: 22px;
+      font-size: 0.76rem;
+      color: rgba(183, 176, 164, 0.85);
+      text-align: right;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    /* Адаптивность */
+    @media (max-width: 900px) {
+      body {
+        padding: 26px 14px;
+      }
+
+      .glass-inner {
+        padding: 26px 22px 22px;
+      }
+
+      .poems-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 20px 10px;
+      }
+
+      .glass-inner {
+        padding: 22px 18px 20px;
+      }
+
+      .intro-heading {
+        padding-left: 16px;
+      }
+
+      .intro-heading-text {
+        font-size: 1.3rem;
+      }
+
+      .timer-wrapper {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .timer-ring {
+        width: 74px;
+        height: 74px;
+      }
+
+      .timer-ring-inner {
+        width: 60px;
+        height: 60px;
+      }
+
+      .footer-note {
+        text-align: left;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Декоративное свечение фона -->
+  <div class="glow-bg" aria-hidden="true">
+    <div class="glow-orb glow-orb--top"></div>
+    <div class="glow-orb glow-orb--side"></div>
+  </div>
+
+  <div class="page-wrapper">
+    <div class="glass-shell">
+      <div class="glass-inner">
+        <div class="content">
+          <!-- Заголовок -->
+          <header class="intro-heading">
+            <div class="section-badge">маленькое знакомство</div>
+            <div class="intro-heading-text">
+              Я&nbsp;ещё не&nbsp;имею чести быть Вам знакомым, но…
+            </div>
+            <div class="intro-subtle">
+              несколько слов, которые давно просились наружу
+            </div>
+          </header>
+
+          <!-- Основное сообщение -->
+          <section class="main-message">
+            <div class="main-message-text">
+              Увидев Вас, я почувствовал то, что принято называть
+              <span class="main-message-em">благоговейным трепетом</span>. В&nbsp;Вашем
+              облике столько света и&nbsp;достоинства, что я&nbsp;не мог остаться в&nbsp;тени.
+              Простите эту маленькую открытку&nbsp;— единственный способ обратиться к&nbsp;Вам,
+              не&nbsp;нарушая Ваших границ.
+            </div>
+          </section>
+
+          <div class="divider"></div>
+
+          <!-- Стихи -->
+          <section>
+            <div class="section-heading">
+              Несколько строк, которые вспоминаются, когда я думаю о&nbsp;Вас
+            </div>
+            <div class="poems-grid">
+              <!-- Карточка 1 -->
+              <article class="poem-card">
+                <div class="poem-author">Татмир</div>
+                <div class="poem-title">«Неизвестная…»</div>
+                <div class="poem-text">
+                 
+                  <em>Кто ты, незнакомка? Кто ты, дева?
+Смотришь в душу сквозь вуаль веков,
+То надменно, словно королева,
+То как ангел долгожданных слов.</em>
+                </div>
+                <div class="poem-placeholder">
+                  
+                </div>
+              </article>
+
+              <!-- Карточка 2 -->
+              <article class="poem-card">
+                <div class="poem-author">Сергей Сокуров</div>
+                <div class="poem-title">«Архивы»</div>
+                <div class="poem-text">
+                  <em>Закрываю глаза и вижу
+Огонёк я в Твоём окошке;
+С каждым мигом он ярче, ближе…
+Не гаси! Подожди немножко!</em>
+                </div>
+                <div class="poem-placeholder">
+                  
+                </div>
+              </article>
+
+              <!-- Карточка 3 -->
+              <article class="poem-card">
+                <div class="poem-author">Александр Онищенко</div>
+                <div class="poem-title">«...»</div>
+                <div class="poem-text">
+                  <em>Я не хочу тобою обладать
+И даже в мыслях к телу прикасаться —
+Мне хочется тобою любоваться,
+Мечтать и, защищая, умирать.</em>
+                </div>
+                <div class="poem-placeholder">
+                  
+                </div>
+              </article>
+            </div>
+          </section>
+
+          <div class="divider"></div>
+
+          <!-- Комплименты -->
+          <section class="compliments">
+            <div class="section-heading">
+              Несколько слов, которые хочется произнести вслух
+            </div>
+            <p class="compliments-intro">
+              Если позволите, я рискну сформулировать три наблюдения, которые возникли почти сразу.
+            </p>
+            <ul>
+              <li>В Вас чувствуется благородная нежность.</li>
+              <li>Ваша улыбка достойна кисти лучших художников.</li>
+              <li>Вы из тех, ради кого хочется становиться лучше.</li>
+            </ul>
+          </section>
+
+          <!-- Таймер -->
+          <section class="timer-section">
+            <p class="timer-text">
+              Возможно, Вы захотите узнать обо мне немного больше…<br>
+              Я оставлю небольшую подсказку&nbsp;&mdash; она появится, если через минуту это желание не исчезнет.
+            </p>
+
+            <div id="countdown-wrapper" class="timer-wrapper">
+              <div class="timer-ring" id="timer-ring">
+                <div class="timer-ring-inner">
+                  <span class="timer-value" id="countdown">00:60</span>
+                </div>
+              </div>
+              <div class="timer-box">
+                <span class="timer-label">обратный отсчёт</span>
+                <span class="timer-subtext">
+                  Никаких обязательств: только возможность, если она покажется Вам уместной.
+                </span>
+              </div>
+            </div>
+
+            <div class="after-timer" id="after-timer">
+              <div class="after-timer-text">
+                Буду искренне рад, если у&nbsp;Вас найдётся минута посмотреть это видео:
+                <a class="link-soft" href="https://vkvideo.ru/video300009216_456241638" target="_blank" rel="noopener noreferrer">
+                  ссылка
+                </a>.
+              </div>
+              <a class="tg-button" href="https://t.me/[твой_ник]" target="_blank" rel="noopener noreferrer">
+                Мой Telegram&nbsp;&mdash;&nbsp;Надеюсь Вы улыбнулись! Я напишу сам, но только с Вашего позволения. Знаком будет любой пост в Вашем канале)
+              </a>
+            </div>
+
+            <div class="footer-note">
+              ни на что не обязывает &mdash; только возможность стать знакомыми
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const DURATION_MS = 60 * 1000; // 60 секунд
+      const STORAGE_KEY_END = "romanticTimerEnd";
+      const STORAGE_KEY_EXPIRED = "romanticTimerExpired";
+
+      const countdownEl = document.getElementById("countdown");
+      const countdownWrapper = document.getElementById("countdown-wrapper");
+      const afterTimer = document.getElementById("after-timer");
+      const timerRing = document.getElementById("timer-ring");
+
+      if (!countdownEl || !countdownWrapper || !afterTimer || !timerRing) return;
+
+      // Если таймер уже был завершён однажды – сразу показываем финальный блок
+      const alreadyExpired = localStorage.getItem(STORAGE_KEY_EXPIRED);
+      if (alreadyExpired === "true") {
+        showFinalState();
+        return;
+      }
+
+      let storedEnd = parseInt(localStorage.getItem(STORAGE_KEY_END), 10);
+      const now = Date.now();
+
+      if (Number.isNaN(storedEnd) || storedEnd <= now) {
+        // Первый визит или время истекло давно – запускаем новую "минуту"
+        storedEnd = now + DURATION_MS;
+        localStorage.setItem(STORAGE_KEY_END, String(storedEnd));
+      }
+
+      function formatAndRender(remainingMs) {
+        const totalSeconds = Math.max(0, Math.ceil(remainingMs / 1000));
+        const seconds = String(totalSeconds).padStart(2, "0");
+        // Формат 00:SS, как Вы просили (00:60, 00:59, …, 00:00)
+        countdownEl.textContent = "00:" + seconds;
+
+        const progress = 1 - Math.min(DURATION_MS, Math.max(0, remainingMs)) / DURATION_MS;
+        const angle = progress; // 0..1 полный оборот
+        timerRing.style.background =
+          "radial-gradient(circle, rgba(0,0,0,0.85) 55%, transparent 60%)," +
+          "conic-gradient(from 270deg, " +
+          "rgba(244, 224, 184, 0.95) " + angle + "turn, " +
+          "rgba(244, 224, 184, 0.0) " + angle + "turn)";
+      }
+
+      function showFinalState() {
+        countdownWrapper.style.display = "none";
+        afterTimer.style.display = "block";
+      }
+
+      let intervalId = null;
+
+      function tick() {
+        const nowTick = Date.now();
+        const remaining = storedEnd - nowTick;
+
+        if (remaining <= 0) {
+          if (intervalId !== null) {
+            clearInterval(intervalId);
+          }
+          formatAndRender(0);
+          localStorage.setItem(STORAGE_KEY_EXPIRED, "true");
+          showFinalState();
+          return;
+        }
+
+        formatAndRender(remaining);
+      }
+
+      // Начальная отрисовка
+      tick();
+      intervalId = setInterval(tick, 1000);
+    })();
+  </script>
+</body>
+</html>
